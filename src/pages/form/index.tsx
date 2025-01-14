@@ -1,135 +1,149 @@
-import React from "react";
+import React, { useState } from "react";
 
-const htmlForm = () => {
+const ReservationForm = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    mobile: "",
+    date: "",
+    mealType: "",
+    specialOccasion: "",
+    isGift: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Form Data Submitted:", formData);
+    // Save formData to backend or elsewhere
+  };
+
   return (
-    <div className="">
-      <form className="max-w-md mx-auto my-20">
-        <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="email"
-            name="floating_email"
-            id="floating_email"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            required
-          />
-          <label
-            htmlFor="floating_email"
-            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
-            Email address
-          </label>
-        </div>
-        <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="password"
-            name="floating_password"
-            id="floating_password"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            required
-          />
-          <label
-            htmlFor="floating_password"
-            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
-            Password
-          </label>
-        </div>
-        <div className="relative z-0 w-full mb-5 group">
-          <input
-            type="password"
-            name="repeat_password"
-            id="floating_repeat_password"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            required
-          />
-          <label
-            htmlFor="floating_repeat_password"
-            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
-            Confirm password
-          </label>
-        </div>
-        <div className="grid md:grid-cols-2 md:gap-6">
-          <div className="relative z-0 w-full mb-5 group">
+    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">Reservation Form</h2>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Name */}
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              Name
+            </label>
             <input
               type="text"
-              name="floating_first_name"
-              id="floating_first_name"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              placeholder="Enter your name"
               required
             />
-            <label
-              htmlFor="floating_first_name"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              First name
-            </label>
           </div>
-          <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="text"
-              name="floating_last_name"
-              id="floating_last_name"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              required
-            />
-            <label
-              htmlFor="floating_last_name"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Last name
+
+          {/* Mobile */}
+          <div>
+            <label htmlFor="mobile" className="block text-sm font-medium text-gray-700">
+              Mobile
             </label>
-          </div>
-        </div>
-        <div className="grid md:grid-cols-2 md:gap-6">
-          <div className="relative z-0 w-full mb-5 group">
             <input
               type="tel"
-              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-              name="floating_phone"
-              id="floating_phone"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
+              id="mobile"
+              name="mobile"
+              value={formData.mobile}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              placeholder="123-456-7890"
               required
             />
-            <label
-              htmlFor="floating_phone"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Phone number (123-456-7890)
-            </label>
           </div>
-          <div className="relative z-0 w-full mb-5 group">
+
+          {/* Date */}
+          <div>
+            <label htmlFor="date" className="block text-sm font-medium text-gray-700">
+              Date
+            </label>
             <input
-              type="text"
-              name="floating_company"
-              id="floating_company"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
+              type="date"
+              id="date"
+              name="date"
+              value={formData.date}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               required
             />
-            <label
-              htmlFor="floating_company"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transhtmlForm -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Company (Ex. Google)
-            </label>
           </div>
-        </div>
-        <button
-          type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          Submit
-        </button>
-      </form>
+
+          {/* Meal Type */}
+          <div>
+            <label htmlFor="mealType" className="block text-sm font-medium text-gray-700">
+              Meal Type
+            </label>
+            <select
+              id="mealType"
+              name="mealType"
+              value={formData.mealType}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              required
+            >
+              <option value="">Select...</option>
+              <option value="Lunch">Lunch</option>
+              <option value="Dinner">Dinner</option>
+            </select>
+          </div>
+
+          {/* Special Occasion */}
+          <div>
+            <label htmlFor="specialOccasion" className="block text-sm font-medium text-gray-700">
+              Special Occasion or Allergies
+            </label>
+            <textarea
+              id="specialOccasion"
+              name="specialOccasion"
+              value={formData.specialOccasion}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              placeholder="Let us know if you are celebrating something or have allergies"
+              rows={3}
+            ></textarea>
+          </div>
+
+          {/* Is Gift */}
+          <div>
+            <label htmlFor="isGift" className="block text-sm font-medium text-gray-700">
+              Is this experience a gift for someone?
+            </label>
+            <select
+              id="isGift"
+              name="isGift"
+              value={formData.isGift}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              required
+            >
+              <option value="">Select...</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
 
-export default htmlForm;
+export default ReservationForm;

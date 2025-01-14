@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Geist, Geist_Mono } from "next/font/google";
-import Form from "./form";
+import ReservationForm from "./form";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export default function Home() {
   return (
     <div className="my-auto">
-      <Form />
+      <ReservationForm />
     </div>
   );
 }
