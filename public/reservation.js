@@ -4,55 +4,55 @@ document.addEventListener("DOMContentLoaded", () => {
     form.id = "reservationForm";
   
     form.innerHTML = `
-      <div class="flex items-center justify-center my-10">
-        <div class="w-full max-w-lg bg-white p-8 rounded-lg shadow-md">
-          <h2 class="text-2xl font-bold text-gray-800 text-center">Reservation Form</h2>
+      <div class="form-container">
+        <div class="form-content">
+          <h2 class="form-title">Reservation Form</h2>
           
           <!-- Name -->
-          <div>
-            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+          <div class="input-container">
+            <label for="name" class="label">Name</label>
             <input
               type="text"
               id="name"
               name="name"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              class="input-field"
               placeholder="Enter your name"
               required
             />
           </div>
   
           <!-- Mobile -->
-          <div>
-            <label for="mobile" class="block text-sm font-medium text-gray-700">Mobile</label>
+          <div class="input-container">
+            <label for="mobile" class="label">Mobile</label>
             <input
               type="tel"
               id="mobile"
               name="mobile"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              class="input-field"
               placeholder="123-456-7890"
               required
             />
           </div>
   
           <!-- Date -->
-          <div>
-            <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
+          <div class="input-container">
+            <label for="date" class="label">Date</label>
             <input
               type="date"
               id="date"
               name="date"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              class="input-field"
               required
             />
           </div>
   
           <!-- Meal Type -->
-          <div>
-            <label for="mealType" class="block text-sm font-medium text-gray-700">Meal Type</label>
+          <div class="input-container">
+            <label for="mealType" class="label">Meal Type</label>
             <select
               id="mealType"
               name="mealType"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              class="input-field"
               required
             >
               <option value="">Select...</option>
@@ -62,24 +62,24 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
   
           <!-- Special Occasion -->
-          <div>
-            <label for="specialOccasion" class="block text-sm font-medium text-gray-700">Special Occasion or Allergies</label>
+          <div class="input-container">
+            <label for="specialOccasion" class="label">Special Occasion or Allergies</label>
             <textarea
               id="specialOccasion"
               name="specialOccasion"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              class="input-field"
               placeholder="Let us know if you are celebrating something or have allergies"
               rows="3"
             ></textarea>
           </div>
   
           <!-- Is Gift -->
-          <div>
-            <label for="isGift" class="block text-sm font-medium text-gray-700">Is this experience a gift for someone?</label>
+          <div class="input-container">
+            <label for="isGift" class="label">Is this experience a gift for someone?</label>
             <select
               id="isGift"
               name="isGift"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              class="input-field"
               required
             >
               <option value="">Select...</option>
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <!-- Submit Button -->
           <button
             type="submit"
-            class="w-full px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            class="submit-btn"
           >
             Submit
           </button>
@@ -136,5 +136,68 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("An error occurred while submitting the reservation.");
       }
     });
+  
+    // Plain CSS styles
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .form-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 50px;
+      }
+      .form-content {
+        width: 100%;
+        max-width: 500px;
+        background-color: white;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      .form-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .input-container {
+        margin-bottom: 20px;
+      }
+      .label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 6px;
+        display: block;
+      }
+      .input-field {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        outline: none;
+        box-sizing: border-box;
+      }
+      .input-field:focus {
+        border-color: #007BFF;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+      }
+      .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background-color: #007BFF;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .submit-btn:hover {
+        background-color: #0056b3;
+      }
+    `;
+    document.head.appendChild(style);
   });
   
