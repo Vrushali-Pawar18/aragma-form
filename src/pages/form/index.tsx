@@ -10,7 +10,15 @@ const ReservationForm = () => {
     isGift: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const [loading, setLoading] = useState(false);
+  const [revalidateBalance, setRevalidateBalance] = useState<boolean>(false)
+
+
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -18,16 +26,85 @@ const ReservationForm = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    // Save formData to backend or elsewhere
+    setLoading(true);
+    try {
+      const amount = 5000;
+      const orderResponse = await fetch("/api/create-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ amount: amount, currency: "USD" }),
+      });
+
+      const order = await orderResponse.json();
+      if (!order.order?.id) {
+        throw new Error("Order creation failed");
+      }
+
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+        amount: order.order.amount,
+        currency: order.order.currency,
+        order_id: order.order.id,
+        handler: async (response: any) => {
+          response.currency = order.order.amount;
+
+          const verifyResponse = await fetch('/api/verify-payment', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(response),
+          });
+
+          const result = await verifyResponse.json();
+
+          if (result.success) {
+              setLoading(false);
+              setRevalidateBalance(prev => !prev)
+              alert('Payment Successful and Verified!');
+          } else {
+              setLoading(false);
+              setRevalidateBalance(prev => !prev)
+              alert('Payment verification failed.');
+          }
+      },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+
+      if (!(window as any).Razorpay) {
+        console.log('rrrrr');
+        
+        const script = document.createElement("script");
+        script.src = "https://checkout.razorpay.com/v1/checkout.js";
+        script.onload = () => {
+          const razorpay = new (window as any).Razorpay(options);
+          razorpay.open();
+        };
+        document.body.appendChild(script);
+      } else {
+        const razorpay = new (window as any).Razorpay(options);
+        razorpay.open();
+      }
+    } catch (error) {
+      console.error("Payment failed:", error);
+      alert("Payment initiation failed.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">Reservation Form</h2>
+        <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">
+          Reservation Form
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Name */}
           <div>
@@ -100,7 +177,10 @@ const ReservationForm = () => {
 
           {/* Special Occasion */}
           <div>
-            <label htmlFor="specialOccasion" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="specialOccasion"
+              className="block text-sm font-medium text-gray-700"
+            >
               Special Occasion or Allergies
             </label>
             <textarea
@@ -136,9 +216,10 @@ const ReservationForm = () => {
           {/* Submit Button */}
           <button
             type="submit"
+            disabled={loading}
             className="w-full px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            Submit
+            {loading ? "Submitting..." : "Submit"}
           </button>
         </form>
       </div>
