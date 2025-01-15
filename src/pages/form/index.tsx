@@ -29,75 +29,90 @@ const ReservationForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
     try {
-      const amount = 5000;
-      const orderResponse = await fetch("/api/create-order", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ amount: amount, currency: "USD" }),
-      });
+        const reservationResponse = await fetch('/api/reservation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
 
-      const order = await orderResponse.json();
-      if (!order.order?.id) {
-        throw new Error("Order creation failed");
-      }
+        const reservationResult = await reservationResponse.json();
 
-      const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-        amount: order.order.amount,
-        currency: order.order.currency,
-        order_id: order.order.id,
-        handler: async (response: any) => {
-          response.currency = order.order.amount;
+        if (!reservationResult.success) {
+            throw new Error(reservationResult.error || 'Failed to save reservation');
+        }
 
-          const verifyResponse = await fetch('/api/verify-payment', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(response),
-          });
+        const amount = 5000;
+        const orderResponse = await fetch('/api/create-order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ amount: amount, currency: 'USD' }),
+        });
 
-          const result = await verifyResponse.json();
+        const order = await orderResponse.json();
 
-          if (result.success) {
-              setLoading(false);
-              setRevalidateBalance(prev => !prev)
-              alert('Payment Successful and Verified!');
-          } else {
-              setLoading(false);
-              setRevalidateBalance(prev => !prev)
-              alert('Payment verification failed.');
-          }
-      },
-        theme: {
-          color: "#3399cc",
-        },
-      };
+        if (!order.order?.id) {
+            throw new Error('Order creation failed');
+        }
 
-      if (!(window as any).Razorpay) {
-        console.log('rrrrr');
-        
-        const script = document.createElement("script");
-        script.src = "https://checkout.razorpay.com/v1/checkout.js";
-        script.onload = () => {
-          const razorpay = new (window as any).Razorpay(options);
-          razorpay.open();
+        const options = {
+            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+            amount: order.order.amount,
+            currency: order.order.currency,
+            order_id: order.order.id,
+            handler: async (response: any) => {
+                response.currency = order.order.amount;
+
+                const verifyResponse = await fetch('/api/verify-payment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(response),
+                });
+
+                const result = await verifyResponse.json();
+
+                if (result.success) {
+                    setLoading(false);
+                    setRevalidateBalance((prev) => !prev);
+                    alert('Payment Successful and Verified!');
+                } else {
+                    setLoading(false);
+                    setRevalidateBalance((prev) => !prev);
+                    alert('Payment verification failed.');
+                }
+            },
+            theme: {
+                color: '#3399cc',
+            },
         };
-        document.body.appendChild(script);
-      } else {
-        const razorpay = new (window as any).Razorpay(options);
-        razorpay.open();
-      }
+
+        if (!(window as any).Razorpay) {
+            const script = document.createElement('script');
+            script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+            script.onload = () => {
+                const razorpay = new (window as any).Razorpay(options);
+                razorpay.open();
+            };
+            document.body.appendChild(script);
+        } else {
+            const razorpay = new (window as any).Razorpay(options);
+            razorpay.open();
+        }
     } catch (error) {
-      console.error("Payment failed:", error);
-      alert("Payment initiation failed.");
+        console.error('Payment failed:', error);
+        alert('Payment initiation failed.');
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
