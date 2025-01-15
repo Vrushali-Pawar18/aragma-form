@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const scriptContainer = document.getElementById("scriptContainer");
+
     const form = document.createElement("form");
     form.className = "space-y-6";
     form.id = "reservationForm";
@@ -98,8 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       </div>
     `;
-  
-    document.body.appendChild(form);
+  scriptContainer.appendChild(form);
   
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
