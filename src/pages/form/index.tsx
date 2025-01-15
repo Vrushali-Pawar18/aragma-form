@@ -115,7 +115,7 @@ const ReservationForm = () => {
 
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center my-10">
       <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-gray-800 text-cente">
           Reservation Form
